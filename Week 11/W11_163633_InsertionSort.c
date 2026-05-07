@@ -3,8 +3,10 @@
 
 void insertionSort(int *bil, int n){
     int i, j, temp;
-    for(i=0; i<n; i++){
 
+    for(i=1; i < n; i++){
+        temp = bil[i];
+        
         for(j=i-1; j>=0 && bil[j] > temp; j--){
             bil[j+1] = bil[j];
         }
