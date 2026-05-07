@@ -1,0 +1,195 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct Node {
+    char nama[50];
+    char jenis[20];
+    int jumlah;
+    char tanggal[20];
+    struct Node *prev;
+    struct Node *next;
+} Node;
+
+Node *top = NULL;
+
+Node* createNode(char nama[], char jenis[], int jumlah, char tanggal[]) {
+    Node *newNode = (Node*) malloc(sizeof(Node));
+
+    strcpy(newNode->nama, nama);
+    strcpy(newNode->jenis, jenis);
+    newNode->jumlah = jumlah;
+    strcpy(newNode->tanggal, tanggal);
+
+    newNode->prev = NULL;
+    newNode->next = NULL;
+
+    return newNode;
+}
+
+void push(char nama[], char jenis[], int jumlah, char tanggal[]) {
+    Node *newNode = createNode(nama, jenis, jumlah, tanggal);
+
+    if(top == NULL){
+        top = newNode;
+    }
+    else{
+        newNode->prev = top;
+        top->next = newNode;
+        top = newNode;
+    }
+}
+
+void pop() {
+    if(top == NULL){
+        printf("Tidak ada transaksi untuk dibatalkan\n");
+        return;
+    }
+
+    Node *temp = top;
+
+    printf("Transaksi terakhir dibatalkan: %s %s %d %s\n",
+        temp->nama, temp->jenis, temp->jumlah, temp->tanggal);
+
+    top = top->prev;
+
+    if(top != NULL)
+        top->next = NULL;
+
+    free(temp);
+}
+
+void display() {
+    if(top == NULL){
+        printf("Tidak ada transaksi\n");
+        return;
+    }
+
+    Node *curr = top;
+
+    while(curr->prev != NULL){
+        curr = curr->prev;
+    }
+
+    printf("\nRiwayat Transaksi:\n");
+
+    while(curr != NULL){
+        printf("Nama: %s\n", curr->nama);
+        printf("Jenis: %s\n", curr->jenis);
+        printf("Jumlah: %d\n", curr->jumlah);
+        printf("Tanggal: %s\n", curr->tanggal);
+        printf("------------------------\n");
+
+        curr = curr->next;
+    }
+}
+
+void loadFile() {
+    FILE *file = fopen("atm_log.txt","r");
+
+    if(file == NULL){
+        return;
+    }
+
+    char nama[50], jenis[20], tanggal[20];
+    int jumlah;
+
+    while(fscanf(file,"%[^#]#%[^#]#%d#%[^\n]\n",
+        nama, jenis, &jumlah, tanggal) != EOF)
+    {
+        push(nama, jenis, jumlah, tanggal);
+    }
+
+    fclose(file);
+}
+
+void saveFile() {
+    FILE *file = fopen("atm_log.txt","w");
+
+    if(file == NULL){
+        printf("File tidak bisa dibuka\n");
+        return;
+    }
+
+    Node *curr = top;
+
+    while(curr && curr->prev != NULL){
+        curr = curr->prev;
+    }
+
+    while(curr != NULL){
+        fprintf(file,"%s#%s#%d#%s\n",
+                curr->nama,
+                curr->jenis,
+                curr->jumlah,
+                curr->tanggal);
+
+        curr = curr->next;
+    }
+
+    fclose(file);
+}
+
+void tambahTransaksi(){
+    char nama[50];
+    char jenis[20];
+    char tanggal[20];
+    int jumlah;
+
+    printf("Nama Nasabah: ");
+    scanf(" %[^\n]", nama);
+
+    printf("Jenis Transaksi (Deposit/Withdraw/Transfer): ");
+    scanf(" %[^\n]", jenis);
+
+    printf("Jumlah Uang: ");
+    scanf("%d",&jumlah);
+
+    printf("Tanggal: ");
+    scanf(" %[^\n]", tanggal);
+
+    push(nama, jenis, jumlah, tanggal);
+}
+
+int main(){
+
+    loadFile();
+
+    int menu;
+
+    do{
+        printf("\n===== MENU ATM =====\n");
+        printf("1. Tambah Transaksi Baru\n");
+        printf("2. Tampilkan Seluruh Riwayat Transaksi\n");
+        printf("3. Batalkan Transaksi Terakhir\n");
+        printf("4. Exit\n");
+        printf("Pilih menu: ");
+        scanf("%d",&menu);
+
+        switch(menu) {
+
+            case 1:
+                tambahTransaksi();
+                break;
+
+            case 2:
+                display();
+                break;
+
+            case 3:
+                pop();
+                break;
+
+            case 4:
+                saveFile();
+                printf("Data disimpan. Program selesai.\n");
+                break;
+
+            default:
+                printf("Menu tidak valid\n");
+        }
+
+    }while(menu != 4);
+
+    return 0;
+}
