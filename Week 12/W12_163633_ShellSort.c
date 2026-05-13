@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void shellSort(int *bil, int n){
+    int i, j, gap;
+
+    for (gap = n / 2; gap > 0; gap /= 2){
+        
+        for(i = gap; i < n; i++){
+            
+            int temp = bil[i];
+            
+            for(j = i; j >= gap && bil[j - gap] > temp; j -= gap){
+                bil[j] = bil[j - gap]; [cite: 316]
+            }
+            
+            bil[j] = temp;
+        }
+    }
+}
+
+int main(){
+    int i, n, *bil;
+    
+    printf("Banyak bilangan: "); [cite: 335]
+    scanf("%d", &n);
+    
+    bil = (int*) malloc(sizeof(int) * n);
+    
+    for(i = 0; i < n; i++){
+        printf("Input bilangan ke-%d: ", i + 1); [cite: 342]
+        scanf("%d", &bil[i]);
+    }
+    
+    shellSort(bil, n);
+    
+    printf("Hasil shell sort:\n"); [cite: 350]
+    for(i = 0; i < n; i++){
+        printf("%d ", bil[i]); [cite: 354]
+    }
+    printf("\n");
+    
+    free(bil);
+    
+    return 0; [cite: 361]
+}
