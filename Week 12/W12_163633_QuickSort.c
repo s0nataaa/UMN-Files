@@ -1,59 +1,59 @@
-#include <stdio.h> [cite: 44]
-#include <stdlib.h> [cite: 46]
+#include <stdio.h>
+#include <stdlib.h>
 
-void swap(int *a, int *b){ [cite: 49]
-    int temp = *a; [cite: 51]
-    *a = *b; [cite: 53]
-    *b = temp; [cite: 55]
+void swap(int *a, int *b){
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
-int partition(int *bil, int l, int r){ [cite: 87]
-    int pivot = bil[r]; [cite: 88]
+int partition(int *bil, int l, int r){
+    int pivot = bil[r];
     
-    int i = l - 1; [cite: 90]
+    int i = l - 1;
     
-    for(int j = l; j <= r - 1; j++){ [cite: 91]
-        if (bil[j] <= pivot) { [cite: 93]
-            i++; [cite: 96]
-            swap(&bil[i], &bil[j]); [cite: 98]
+    for(int j = l; j <= r - 1; j++){
+        if (bil[j] <= pivot) {
+            i++;
+            swap(&bil[i], &bil[j]);
         }
     }
-    swap(&bil[i + 1], &bil[r]); [cite: 103]
+    swap(&bil[i + 1], &bil[r]);
     
-    return (i + 1); [cite: 107]
+    return (i + 1);
 }
 
-void quickSort(int *bil, int l, int r){ [cite: 120]
-    if(l < r){ [cite: 121]
-        int pi = partition(bil, l, r); [cite: 123]
+void quickSort(int *bil, int l, int r){
+    if(l < r){
+        int pi = partition(bil, l, r);
         
-        quickSort(bil, l, pi - 1); [cite: 131]
-        quickSort(bil, pi + 1, r); [cite: 133]
+        quickSort(bil, l, pi - 1);
+        quickSort(bil, pi + 1, r);
     }
 }
 
-int main(){ [cite: 139]
-    int i, n, *bil; [cite: 141]
+int main(){
+    int i, n, *bil;
     
-    printf("Banyak bilangan: "); [cite: 144]
-    scanf("%d", &n); [cite: 145]
+    printf("Banyak bilangan: ");
+    scanf("%d", &n);
     
-    bil = (int*) malloc(sizeof(int) * n); [cite: 148]
+    bil = (int*) malloc(sizeof(int) * n);
     
-    for(i = 0; i < n; i++){ [cite: 151]
-        printf("Input bilangan ke-%d: ", i + 1); [cite: 157]
-        scanf("%d", &bil[i]); [cite: 157]
+    for(i = 0; i < n; i++){
+        printf("Input bilangan ke-%d: ", i + 1);
+        scanf("%d", &bil[i]);
     }
     
-    quickSort(bil, 0, n - 1); [cite: 158]
+    quickSort(bil, 0, n - 1);
     
-    printf("Hasil quick sort:\n"); [cite: 161]
-    for(i = 0; i < n; i++){ [cite: 162]
-        printf("%d ", bil[i]); [cite: 164]
+    printf("Hasil quick sort:\n");
+    for(i = 0; i < n; i++){
+        printf("%d ", bil[i]);
     }
     printf("\n");
     
-    free(bil); [cite: 166]
+    free(bil);
     
-    return 0; [cite: 169]
+    return 0;
 }

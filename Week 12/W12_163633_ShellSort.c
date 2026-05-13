@@ -11,7 +11,7 @@ void shellSort(int *bil, int n){
             int temp = bil[i];
             
             for(j = i; j >= gap && bil[j - gap] > temp; j -= gap){
-                bil[j] = bil[j - gap]; [cite: 316]
+                bil[j] = bil[j - gap];
             }
             
             bil[j] = temp;
@@ -22,25 +22,25 @@ void shellSort(int *bil, int n){
 int main(){
     int i, n, *bil;
     
-    printf("Banyak bilangan: "); [cite: 335]
+    printf("Banyak bilangan: ");
     scanf("%d", &n);
     
     bil = (int*) malloc(sizeof(int) * n);
     
     for(i = 0; i < n; i++){
-        printf("Input bilangan ke-%d: ", i + 1); [cite: 342]
+        printf("Input bilangan ke-%d: ", i + 1);
         scanf("%d", &bil[i]);
     }
     
     shellSort(bil, n);
     
-    printf("Hasil shell sort:\n"); [cite: 350]
+    printf("Hasil shell sort:\n");
     for(i = 0; i < n; i++){
-        printf("%d ", bil[i]); [cite: 354]
+        printf("%d ", bil[i]);
     }
     printf("\n");
     
     free(bil);
     
-    return 0; [cite: 361]
+    return 0;
 }
